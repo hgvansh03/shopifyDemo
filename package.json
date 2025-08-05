@@ -87,10 +87,10 @@
     "tailwindcss-animate": "^1.0.7",
     "vaul": "^0.9.9",
     "vite-tsconfig-paths": "^5.0.1",
-    "zod": "3.25.67"
+    "zod": "3.25.67",
+    "remix": "^2.7.0"
   },
   "devDependencies": {
-    "remix": "^2.7.0",
     "@remix-run/dev": "^2.12.0",
     "@shopify/api-codegen-preset": "^1.0.1",
     "@tailwindcss/postcss": "^4.1.9",
