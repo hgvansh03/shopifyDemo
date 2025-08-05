@@ -90,6 +90,7 @@
     "zod": "3.25.67"
   },
   "devDependencies": {
+    "remix": "^2.7.0",
     "@remix-run/dev": "^2.12.0",
     "@shopify/api-codegen-preset": "^1.0.1",
     "@tailwindcss/postcss": "^4.1.9",
