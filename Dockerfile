@@ -1,18 +1,26 @@
-# Step 1: Use Node 20 base image
-FROM node:20.11.1-alpine AS base
+# Build Stage
+FROM node:20 AS builder
 
-# Step 2: Set working directory
 WORKDIR /app
 
-# Step 3: Copy package files and install
 COPY package*.json ./
-RUN npm install --omit=dev
 
-# Step 4: Copy the rest of your code
+# Install all dependencies including devDependencies
+RUN npm install
+
 COPY . .
 
-# Step 5: Build the app
 RUN npm run build
 
-# Step 6: Start command
+# Production Stage
+FROM node:20
+
+WORKDIR /app
+
+COPY package*.json ./
+
+RUN npm install --omit=dev
+
+COPY --from=builder /app .
+
 CMD ["npm", "run", "docker-start"]
