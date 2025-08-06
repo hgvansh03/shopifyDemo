@@ -1,21 +1,18 @@
-FROM node:18-alpine
-RUN apk add --no-cache openssl
+# Step 1: Use Node 20 base image
+FROM node:20.11.1-alpine AS base
 
-EXPOSE 3000
-
+# Step 2: Set working directory
 WORKDIR /app
 
-ENV NODE_ENV=production
+# Step 3: Copy package files and install
+COPY package*.json ./
+RUN npm install --omit=dev
 
-COPY package.json package-lock.json* ./
-
-RUN npm ci --omit=dev && npm cache clean --force
-# Remove CLI packages since we don't need them in production by default.
-# Remove this line if you want to run CLI commands in your container.
-RUN npm remove @shopify/cli
-
+# Step 4: Copy the rest of your code
 COPY . .
 
+# Step 5: Build the app
 RUN npm run build
 
+# Step 6: Start command
 CMD ["npm", "run", "docker-start"]
