@@ -1,26 +1,27 @@
-# Build Stage
-FROM node:20 AS builder
+# ---- Build stage ----
+FROM node:18 AS builder
 
 WORKDIR /app
 
-COPY package*.json ./
-
-# Install all dependencies including devDependencies
+COPY package.json package-lock.json ./
 RUN npm install
 
 COPY . .
 
+# Generate Prisma client
+RUN npx prisma generate
+
+# Build Remix app
 RUN npm run build
 
-# Production Stage
-FROM node:20
+# ---- Production stage ----
+FROM node:18
 
 WORKDIR /app
 
-COPY package*.json ./
+COPY --from=builder /app ./
 
-RUN npm install --omit=dev
+# Optional: prune dev dependencies
+RUN npm prune --production
 
-COPY --from=builder /app .
-
-CMD ["npm", "run", "docker-start"]
+CMD ["npm", "start"]
